@@ -26,17 +26,44 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-table, th, td {
-  border: 1px solid black;
-}
 button {
   font-size: 100%;
   background-color: #E6E6E6;
 } */
 .naoUsado {
-  background-color: lightgray;
+  background-color: #e0e0e0;
+}
+table, th, td {
+  border: 1px solid black;
+  padding: .2em .2em !important;
+  text-align: center;
+}
+.hora {
+  width: 10%;
+}
+
+@media print {
+  #filtros {
+    display: none;
+    font-size: 80%;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  table, th, td {
+    border: 1px solid black;
+    padding: .2em .2em !important;
+    text-align: center;
+  }
+  .hora {
+    width: 10%;
+  }
+  .naoUsado {
+    background-color: #e0e0e0;
+  }
+  h1 {
+    text-align: center;
+  }
+  
 }

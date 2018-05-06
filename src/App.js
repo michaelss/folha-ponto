@@ -12,6 +12,8 @@ class App extends Component {
       mes: 1,
       ano: new Date().getFullYear()
     };
+
+    this.meses = Array.from({length: 12}, (v, i) => new Date(2018, i).toLocaleString('pt-BR', {month: 'long'}) );
   }
 
   preencher(e) {
@@ -19,21 +21,28 @@ class App extends Component {
     if (this.state.feriadosStr !== undefined) {
       this.setState({feriados: this.state.feriadosStr.replace(' ', '').split(',')});
     }
-    this.setState({dias: Array.from({length: 31}, (v, i) => new Date(Date.UTC(this.state.ano, this.state.mes-1, i+2)))});
+
+    this.qtDias = new Date(this.state.ano, this.state.mes, 0).getDate();
+    this.setState({dias: Array.from({length: this.qtDias}, (v, i) => new Date(Date.UTC(this.state.ano, this.state.mes-1, i+2)))});
   }
 
   tratarAlteracao(nomeInput, e) {
     this.setState({[nomeInput]: e.target.value});
   }
 
+  imprimir(e) {
+    e.preventDefault();
+    window.print();
+  }
+
   render() {
     return (
       <div>
         <header>
-          <h1>Gerador de Folha de Ponto</h1>
+          <h1>Folha de Ponto</h1>
         </header>
 
-        <div>
+        <div id="filtros">
           <form className="pure-form pure-form-aligned">
             <div className="pure-control-group">
               <label htmlFor="empregador">Empregador:</label>
@@ -53,18 +62,7 @@ class App extends Component {
             <div className="pure-control-group">
               <label htmlFor="mes">Mês:</label>
               <select id="mes" value={this.state.mes} onChange={this.tratarAlteracao.bind(this, 'mes')}>
-                <option value="1">Janeiro</option>
-                <option value="2">Fevereiro</option>
-                <option value="3">Março</option>
-                <option value="4">Abril</option>
-                <option value="5">Maio</option>
-                <option value="6">Junho</option>
-                <option value="7">Julho</option>
-                <option value="8">Agosto</option>
-                <option value="9">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
+                {this.meses.map((m,i) => <option value={i+1}>{m}</option> )}
               </select>
             </div>
 
@@ -74,7 +72,8 @@ class App extends Component {
             </div>
 
             <div className="pure-controls">
-              <button className="pure-button pure-button-primary" onClick={this.preencher.bind(this)}>Gerar folha de ponto</button>
+              <button className="pure-button pure-button-primary" onClick={this.preencher.bind(this)}>Gerar</button>
+              <button className="pure-button pure-button-primary" onClick={this.imprimir.bind(this)} style={{marginLeft: 10}}>Imprimir</button>
             </div>
           </form>
 
@@ -82,20 +81,18 @@ class App extends Component {
 
         <div id="resultados">
 
-          <h1>FOLHA DE PONTO</h1>
-
           <div>Empregador: {this.state.empregador}</div>
           <div>Empregado: {this.state.empregado}</div>
-          <div>Mês: {this.state.mes} - Ano: {this.state.ano}</div>
+          <div>Mês: {this.meses[this.state.mes-1]} - Ano: {this.state.ano}</div>
 
           <table className="pure-table pure-table-bordered">
             <thead>
               <tr>
                 <th>Dia</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-                <th>Entrada</th>
-                <th>Saída</th>
+                <th className="hora">Entrada</th>
+                <th className="hora">Saída</th>
+                <th className="hora">Entrada</th>
+                <th className="hora">Saída</th>
                 <th>Ass. Empregado</th>
                 <th>Ass. Empregador</th>
               </tr>
