@@ -68,7 +68,7 @@ class App extends Component {
 
             <div className="pure-control-group">
               <label htmlFor="ano">Ano:</label>
-              <input id="ano" type="text" value={this.state.ano} onChange={this.tratarAlteracao.bind(this, 'ano')} placeholder="Ex: 2018"/>
+              <input id="ano" type="number" value={this.state.ano} onChange={this.tratarAlteracao.bind(this, 'ano')} placeholder="Ex: 2018"/>
             </div>
 
             <div className="pure-controls">
